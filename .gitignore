@@ -3,3 +3,4 @@ Release/*
 .vs/*
 *.user
 *.filters
+venv/*
