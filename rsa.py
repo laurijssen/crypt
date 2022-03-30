@@ -58,6 +58,28 @@ def main():
                 message_as_int = simple_rsa_decrypt(cipher_as_int, private_key)
                 message = int_to_bytes(message_as_int)
                 print('\nPlaintext: {}\n'.format(message))
+        elif choice == '3':
+            public_key_file_temp = input("\nEnter public key file:")
+            if not os.path.exists(public_key_file_temp):
+                print("File {} does not exist.".format(public_key_file_temp))
+            else:
+                with open(public_key_file_temp, "rb") as public_key_file_object:
+                    public_key = serialization.load_pem_public_key(public_key_file_object.read(),
+                                                                   backend=default_backend())
+                    private_key_file = None
+                    private_key = None
+        elif choice == '4':
+            private_key_file_temp = input("\nEnter private key file:")
+            if not os.path.exists(private_key_file_temp):
+                print("File {} does not exist.".format(private_key_file_temp))
+            else:
+                with open(private_key_file_temp, "rb") as private_key_file_object:
+                    private_key = serialization.load_pem_private_key(private_key_file_object.read(),
+                                                                     backend = default_backend(),
+                                                                     password = None)
+                    private_key_file = private_key_file_temp
+                    print("\nPrivate key file loaded.\n")
+
 
 #if __name__ == 'main':
 main()
