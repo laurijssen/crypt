@@ -21,13 +21,13 @@ Let docker pull the containers insecurely by editing /etc/docker/daemon.json :
 ```
 {
     "bip": "10.200.200.90/24"
-    "insecure-registries" : [ "ubdock05.fujicolor.nl:5000" ]
+    "insecure-registries" : [ "domain.nl:5000" ]
 }
 ```
 
 ## pull latest pablo by running pull_pablo.sh script
 
-./pull_pablo.sh s.laurijxxx@fujicolor.nl ~/.ssh/certif
+./pull_pablo.sh s.laurijxxx@domain.nl ~/.ssh/certif
 
 ## Add service which changes docker0 to 10.x.x.x and removes 172.17.x.x
 
@@ -431,8 +431,8 @@ Then create file /etc/cifspasswd
 
 ```
 username=ServicesDocker
-password=RrHZFybq00axAU6aRp81
-domain=fujicolor
+password=...
+domain=test
 ```
 
 Then mount the windows share by adding the following line to /etc/fstab.
@@ -449,7 +449,7 @@ First create a secret that fstab/cifs uses, values are base64 encoded
 
 ```
 echo -n ServicesDocker | base64
-echo -n RrHZFybq00axAU6aRp81 | base64
+echo -n pw1 | base64
 echo -n fujicolor | base64
 ```
 
@@ -523,12 +523,12 @@ Then every deployment/pod can be configured
         secretRef:
           name: "cifs-secret"
         options:
-          networkPath: "//dfs.fujicolor.nl/FujiFE"
+          networkPath: "//dfs.domain.nl/FujiFE"
           mountOptions: "dir_mode=0755,file_mode=0644,noperm"
 ```
 
 * The pod will take the just installed cifs driver from the host's system /usr/libexec/kubernetes/kubelet-plugins/volume/exec.
-* It creates create a /data directory inside the container and mounts it to //dfs.fujicolor.nl/FujiFE.
+* It creates create a /data directory inside the container and mounts it to //dfs.domain.nl/FujiFE.
 * It uses the secrets installed with **kubectl create secret**
 
 # Install metrics server
@@ -689,7 +689,7 @@ upgrade kubeadm
 ```sudo apt-mark unhold kubeadm && sudo apt-get update && sudo apt-get install -y kubeadm=1.22.7-00 && sudo apt-mark hold kubeadm```
 
 on master node:
-```kubectl drain nodename.fujicolor.nl --ignore-daemonsets```
+```kubectl drain nodename.domain.nl --ignore-daemonsets```
 
 back to worker node:
 ```sudo kubeadm upgrade node```
